@@ -1,13 +1,32 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = {
+const clientConfig = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.join(__dirname, 'public'),
+  },
+  module: {
+    rules: [
+      {
+        loader: 'babel-loader',
+        test: /\.js$/,
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  devServer: {
+    static: path.join(__dirname, 'public'),
+  },
+};
+
+const serverConfig = {
   entry: './server/index.js',
   output: {
     filename: 'index.js',
     path: path.join(__dirname, 'dist'),
   },
-  mode: 'development',
   module: {
     rules: [
       {
@@ -20,7 +39,6 @@ module.exports = {
   target: 'node',
   externals: [nodeExternals()],
   node: { __dirname: false },
-  devServer: {
-    static: path.join(__dirname, 'public'),
-  },
 };
+
+module.exports = [clientConfig, serverConfig];
