@@ -1,11 +1,13 @@
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './server/index.js',
   output: {
-    filename: 'bundle.js',
-    path: path.join(__dirname, 'public'),
+    filename: 'index.js',
+    path: path.join(__dirname, 'dist'),
   },
+  mode: 'development',
   module: {
     rules: [
       {
@@ -15,7 +17,10 @@ module.exports = {
       },
     ],
   },
+  target: 'node',
+  externals: [nodeExternals()],
+  node: { __dirname: false },
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
+    static: path.join(__dirname, 'public'),
   },
 };
